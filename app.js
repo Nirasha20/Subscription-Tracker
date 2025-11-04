@@ -1,5 +1,10 @@
 import express from 'express';
 import './config/env.js';
+import userRouter from './route/user.routes.js';
+import authRouter from './route/auth.routes.js';
+import subscriptionRouter from './route/subscription.routes.js';
+
+// Initialize express app
 
 const app = express();
 
