@@ -4,9 +4,17 @@
 
  userRouter.get('/', (req,res) => {
      // Handle fetching user details
-     res.send('Get User details');
+     res.send('Get all Users');
  });
- userRouter.put('/', (req,res) => {
+ userRouter.get('/:id', (req,res) => {
+     // Handle fetching user details
+     res.send(`Get User details  ${req.params.id}`);
+ });
+ userRouter.post('/', (req,res) => {
+     // Handle creating a new user
+     res.send('Create a new User');
+ });
+ userRouter.put('/:id', (req,res) => {
      // Handle updating user details
      res.send('Update User details');
  });
