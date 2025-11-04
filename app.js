@@ -3,6 +3,7 @@ import './config/env.js';
 import userRouter from './route/user.routes.js';
 import authRouter from './route/auth.routes.js';
 import subscriptionRouter from './route/subscription.routes.js';
+import { connect } from 'mongoose';
 
 // Initialize express app
 
@@ -24,6 +25,19 @@ const PORT = Number(process.env.PORT) || 3000;
 function startServer(port, remainingTries = 5) {
     const server = app.listen(port, () => {
         console.log(`Server is running on http://localhost:${port}`);
+        const connectToDatabase = async () => {
+            try {
+                await connect(process.env.DB_URI, {
+                    useNewUrlParser: true,
+                    useUnifiedTopology: true,
+                });
+                console.log(`Connected to MongoDB database.`);
+            } catch (error) {
+                console.error("Error connecting to MongoDB database:", error);
+                process.exit(1); // Exit the process with failure
+            }
+        };
+        connectToDatabase();
     });
 
     server.on('error', (err) => {

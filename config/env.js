@@ -1,5 +1,18 @@
 import { config } from "dotenv";
+import { existsSync } from "fs";
+import path from "path";
 
-config({ path: `.env.${process.env.NODE_ENV || "development"}.local` });
+const envName = process.env.NODE_ENV || "development";
+const candidatePaths = [
+	path.resolve(process.cwd(), `.env.${envName}.local`),
+	path.resolve(process.cwd(), "config", `.env.${envName}.local`),
+];
 
-export const { PORT, NODE_ENV } = process.env;
+for (const p of candidatePaths) {
+	if (existsSync(p)) {
+		config({ path: p, override: false });
+		break;
+	}
+}
+
+export const { PORT, NODE_ENV, DB_URI } = process.env;
