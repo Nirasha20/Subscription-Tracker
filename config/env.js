@@ -15,4 +15,4 @@ for (const p of candidatePaths) {
 	}
 }
 
-export const { PORT, NODE_ENV, DB_URI, JWT_SECRET, JWT_EXPIRES_IN } = process.env;
+export const { PORT, NODE_ENV, DB_URI, JWT_SECRET, JWT_EXPIRES_IN, ARCJET_KEY, ARCJECT_ENV } = process.env;
