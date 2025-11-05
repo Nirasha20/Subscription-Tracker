@@ -7,6 +7,11 @@ import subscriptionRouter from './route/subscription.routes.js';
 // Initialize express app
 
 const app = express();
+app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/users', userRouter);
+app.use('/api/v1/subscriptions', subscriptionRouter);
+
+// Basic route for testing
 
 app.get('/',(req,res)=>{
     res.send('Welcome to the subscription API!');
@@ -14,18 +19,32 @@ app.get('/',(req,res)=>{
 
 // Use PORT from environment if provided, otherwise default to 3000
 const PORT = Number(process.env.PORT) || 3000;
-const server = app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
 
-// Helpful error handling (e.g., when the port is already in use)
-server.on('error', (err) => {
-    if (err && err.code === 'EADDRINUSE') {
-        console.error(`Port ${PORT} is already in use. Set a different PORT (e.g., 3001) and try again.`);
-        console.error('PowerShell example:  $env:PORT=3001; npm run dev');
-        process.exit(1);
-    }
-    throw err;
-});
+// Start the server with graceful fallback if the port is in use
+function startServer(port, remainingTries = 5) {
+    const server = app.listen(port, () => {
+        console.log(`Server is running on http://localhost:${port}`);
+    });
+
+    server.on('error', (err) => {
+        if (err && err.code === 'EADDRINUSE') {
+            if (remainingTries > 0) {
+                const nextPort = port + 1;
+                console.warn(`Port ${port} is already in use. Trying ${nextPort}...`);
+                setTimeout(() => startServer(nextPort, remainingTries - 1), 250);
+            } else {
+                console.error(
+                    `Port ${port} is already in use and automatic retries are exhausted.\n` +
+                    `Set a different PORT and try again. Example (PowerShell):  $env:PORT=3001; npm run dev`
+                );
+                process.exit(1);
+            }
+        } else {
+            throw err;
+        }
+    });
+}
+
+startServer(PORT);
 
 export default app;
