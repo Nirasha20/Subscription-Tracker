@@ -1,16 +1,26 @@
 import express from 'express';
+import cookieParser from 'cookie-parser';
 import './config/env.js';
 import userRouter from './route/user.routes.js';
 import authRouter from './route/auth.routes.js';
 import subscriptionRouter from './route/subscription.routes.js';
 import { connect } from 'mongoose';
+import errorMiddleware from './middlewares/error.middleware.js';
+import cookieParser from 'cookie-parser';
 
 // Initialize express app
 
 const app = express();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/subscriptions', subscriptionRouter);
+
+app.use(errorMiddleware);
 
 // Basic route for testing
 
