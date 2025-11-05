@@ -6,7 +6,6 @@ import authRouter from './route/auth.routes.js';
 import subscriptionRouter from './route/subscription.routes.js';
 import { connect } from 'mongoose';
 import errorMiddleware from './middlewares/error.middleware.js';
-import cookieParser from 'cookie-parser';
 
 // Initialize express app
 
