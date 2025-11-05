@@ -1,15 +1,11 @@
- import { Router } from "express";
+import { Router } from "express";
+import authorize from "../middlewares/auth.middleware.js";
+import { getUsers, getUser } from "../controllers/user.controller.js";
 
- const userRouter =Router();
+const userRouter = Router();
 
- userRouter.get('/', (req,res) => {
-     // Handle fetching user details
-     res.send('Get all Users');
- });
- userRouter.get('/:id', (req,res) => {
-     // Handle fetching user details
-     res.send(`Get User details  ${req.params.id}`);
- });
+ userRouter.get('/', getUsers);
+ userRouter.get('/:id', authorize, getUser);
  userRouter.post('/', (req,res) => {
      // Handle creating a new user
      res.send('Create a new User');
