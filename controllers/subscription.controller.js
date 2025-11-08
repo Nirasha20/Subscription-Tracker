@@ -15,7 +15,7 @@ export const getUserSubscriptions = async (req, res, next) => {
     try {
         if(req.user._id !== req.params.id){
             const error = new Error('Unauthorized access to subscriptions');
-            error.statusCode = 403;
+            error.statusCode = 401;
             throw error;
         }
         const subscriptions = await Subscription.find({ user: req.params.id });
