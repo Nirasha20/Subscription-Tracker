@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import { emailTemplates } from './email-templates.js';
+import transporter, { accountEmail } from '../config/nodemailer.js';
 export const sendReminderEmail = async (to, type, subscription) => {
 
     if(!to || !type ) {
@@ -29,4 +30,11 @@ export const sendReminderEmail = async (to, type, subscription) => {
         subject: subject,
         html: message,
     };
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.error('Error sending email:', error);
+        } else {
+            console.log('Email sent successfully:', info.response);
+        }
+    });
 }
