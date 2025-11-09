@@ -1,6 +1,7 @@
 import { Router } from "express";
+import { send } from "process";
 const workflowRouter = Router();
 
-workflowRouter.get('/',  (req, res) => {});
+workflowRouter.post('/subscription/reminder',  sendReminders);
 
 export default workflowRouter;
